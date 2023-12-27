@@ -1,0 +1,50 @@
+#main{
+    margin-top: 1%;
+}
+.games{
+    flex-flow: column;
+
+}
+.col{
+     border: solid;
+    border-width: 1px;
+    background-color: rgb(18, 18, 18);
+    margin-bottom: 8px;
+    border-radius: 10px;
+    padding: 7px;
+    text-align: center;
+}
+.button{
+    border-radius: 10px;
+}
+ .col_menu{
+    margin-right: 10px;
+    border-radius: 22px;
+    height: 39px;
+    text-align: center;
+    padding: 6px;
+} 
+.game_name{
+    font-weight: bold;
+}
+.preview_pic{
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.description{
+    margin-left: 12px;
+    word-wrap: break-word;
+    margin-top: 1%;
+}
+a{
+    color: red;
+    text-decoration: none;
+}
+#profile{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+}
