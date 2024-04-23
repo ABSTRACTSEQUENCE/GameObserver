@@ -154,3 +154,5 @@ C:\Users\AbstractSequence\Desktop\Project\GameObserver\AdminPanel\obj\Debug\Admi
 C:\Users\AbstractSequence\Desktop\Project\GameObserver\AdminPanel\obj\Debug\AdminPanel.Migrations._1.resources
 C:\Users\AbstractSequence\Desktop\Project\GameObserver\AdminPanel\obj\Debug\AdminPanel.Migrations._2.resources
 C:\Users\AbstractSequence\Desktop\Project\GameObserver\AdminPanel\obj\Debug\AdminPanel.CommentDisplay.resources
+C:\Users\AbstractSequence\Desktop\Project\GameObserver\AdminPanel\obj\Debug\AdminPanel.Migrations.ava.resources
+C:\Users\AbstractSequence\Desktop\Project\GameObserver\AdminPanel\obj\Debug\AdminPanel.Migrations.fav.resources

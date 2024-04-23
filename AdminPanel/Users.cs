@@ -12,13 +12,15 @@ namespace AdminPanel
 		public string Name { get; set; }
 		public string Password { get; set; }
 		public string Email { get; set; }
+		public List<Game> FavoriteGames { get; set; }
 		//public List<Comment> Comments { get; set; }
-		public byte[] Avatar { get; set; }
+		public string Avatar { get; set; }
 		public Users(string name ="", string password="", string email = "")
 		{
 			Name = name;
 			Password = password;
 			Email = email;
+			FavoriteGames = new List<Game>();
 		}
 		public Users() { }
 	}

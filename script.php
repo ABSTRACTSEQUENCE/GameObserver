@@ -9,7 +9,7 @@ class User{
     public $Password;
     public $Email;
     public $Avatar;
-    function args(string $name, string $pass, string $email, $Avatar = null){
+    function args(string $name, string $pass, string $email = null, $Avatar = null){
         $this->Name = $name; $this->Password = $pass; $this->Email = $email; if($Avatar)$this->Avatar = $Avatar;
     }
     public function getName() : string{return $this->Name;}
@@ -43,16 +43,25 @@ function connect(){
     else die("ERROR: Connection failed");
 }
 
-function get_user(){
-    if(!isset($_COOKIE["name"])) return;
+function get_user($id){
+    //if(!isset($_COOKIE["uid"])) return;
     $connection = connect();
-    $stmt = sqlsrv_query($connection,"SELECT * FROM dbo.Users WHERE Users.Name = '".$_COOKIE["name"]."'");
+
+    $stmt = sqlsrv_query($connection,"SELECT * FROM dbo.Users WHERE Users.Id = ".$id);
     $user = sqlsrv_fetch_object($stmt,'User');
-    if(!$user) die("ERROR: Unable to get user");
+    
+    if(!$user) return null;//die("ERROR: Unable to get user");
     return $user;
 }
+function get_users(){
+    $connection = connect();
+    $stmt = sqlsrv_query($connection, "SELECT * FROM dbo.Users");
+    $arr = array();
+    $arr = fetch($arr,$stmt,"User");
+    return $arr;
+}
 
-function get_comments(int $gameId){
+function get_comments(){
     $connection = connect();
     $cmd = "SELECT Comments.Id AS CommentId, Users.Name AS 'Username', Comments.Text AS 'Text', Games.Id AS 'GameId' FROM Users, dbo.Comments, dbo.Games WHERE Comments.User_Id = Users.Id AND Comments.Game_Id = Games.Id";
     //"SELECT Comments.Id AS 'CommentId', Users.Name AS 'Username', Games.Name AS 'Game', Text AS 'Text' FROM Comments, Users, Games WHERE User_Id = Users.Id AND Comments.Game_Id = Games.Id AND dbo.Games.Id = ".$gameId .";";

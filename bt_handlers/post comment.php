@@ -3,7 +3,7 @@ include "../script.php";
 var_dump($_POST);
 if(!isset($_POST['game'])) die("ERROR: Game not found");
 if(!isset($_POST["text"])) die("ERROR: Comment text not found");
-$user = get_user();
+$user = get_user($_COOKIE["uid"]);
 $text = $_POST["text"];
 
 if(str_contains($text,'\'')) {

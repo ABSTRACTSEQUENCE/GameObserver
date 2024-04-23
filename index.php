@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<?
+    include 'script.php';
+    $games = get_games();
+    $genre = null;
+    
+    if(isset($_COOKIE["uid"])) 
+        $user = get_user($_COOKIE["uid"]);
+    if (isset($_GET["genre"]))
+        $genre = get_genre((int) $_GET["genre"]);
+    ?>
 <html>
 
 <head>
@@ -11,44 +21,42 @@
     <link href="favicon.ico" rel="icon">
 </head>
 
-<body class="bg-dark text-light" background="Pictures\Background\bg.jpg">
+<body class="bg-dark text-light">
     <style>
         .game {
             margin-top: 3%;
-            display: flex;
+            /*display: flex;*/
             padding: 10px;
-            flex-direction: column;
+            /*flex-direction: column;*/
         }
-        
+        #topbarElement{
+            width: 50%;
+        }
+   
     </style>
-    <div class="container" id='profile'>
+    
+
+    <div class="d-flex flex-row align-items-center element justify-content-evenly text-center">
+        <div><a href="genres.php">Жанры</a></div>
+        
         <?
-        include 'script.php';
-        $games = get_games();
-        $genre = null;
-        if (isset($_GET["genre"]))
-            $genre = get_genre((int) $_GET["genre"]);
-        ?>
-        <div class="container-fluid text-center" id="main">
-            <div class="row">
-                <div class="col col_menu"><a href="genres.php">Жанры</a></div>
-                <?
-        if (empty($_COOKIE["name"])) {
-            echo (
-                "<div class='col'><img src='Pictures/icon.jpg' >
-                <p>Гость( Не зарегестрирован )</p></div>");
-        } else{
-            echo (
-                "<div class='col' id= 'user'><a href='profile.php'><img src='Pictures/icon.jpg' id='user_img'></a>
-                Пользователь: <a href='profile.php'>" . $_COOKIE['name'] . "</a></div>");
-        }  
-        ?>
-                <div class="col col_menu"><a href="reg.php">Регистрация/Вход</a></div>
-            </div>
-        </div>
-        </div>
-        <div class="container text-center">
-            <div class="row games">
+        if (!isset($user)){
+            echo ("<div><p>Гость( Не зарегестрирован )</p></div>");
+        }
+        else{
+            echo("<div>");
+            if($user->Avatar) echo("<a href='profile.php'><img class='mb-3' style='max-width:250px; border-radius:20px;' src= $user->Avatar id='user_img'></a>");
+            echo ("<div><a href='profile.php'>$user->Name</a></div></div>");
+        } ?>
+        <div><a href="index.php"><img src="logo_white.png"></a></div>
+        
+        <div class='row'><a href='reg.php?type=reg'>Регистрация</a></div>
+        <div class='row'><a href='reg.php?type=log'>Вход</a></div>
+    </div>
+    <div class="d-flex flex-column flex-nowrap">
+    <div class="container">
+    </div>
+        <div class="element col-auto container text-center games">
                 <?
                 //$games = get_games();
                 if(isset($genre)){ echo ("<div class='col'><a href = 'index.php'>Сбросить жанры</a></div><h2>Игры жанра " . $genre->Name . "</h2>"); }
@@ -73,7 +81,10 @@
                 } else
                     echo ("<h1>В базе данных пока нет ни одной игры. Добавьте игры через AdminPanel</h1>");
                 ?>
+            
             </div>
+    </div>
+
             <script src="script.php"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

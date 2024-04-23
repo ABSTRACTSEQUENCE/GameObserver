@@ -212,7 +212,13 @@ namespace AdminPanel
 				else if (source == ds.Tables[(int)Data.Users])
 				{
 					id = (int)data.SelectedCells[0].Value;
-					if (data.SelectedCells[1].Value.ToString() != "admin") c.Users.Remove(c.Users.Find(id));
+					if (data.SelectedCells[1].Value.ToString() != "admin")
+					{
+						int comment_id;
+						Comment[] ToDel = c.Comments.Where((comment) => comment.User == (c.Users.Where((u) => u.Id == id).FirstOrDefault())).ToArray();
+						c.Comments.RemoveRange(ToDel);
+						c.Users.Remove(c.Users.Find(id));
+					}
 					else MessageBox.Show("Аккаунт администратора можно удалить только через запрос в БД"); //Чтобы случайно не удалить аккаунт администратора
 				}
 				else if (source == ds.Tables[(int)Data.Games])

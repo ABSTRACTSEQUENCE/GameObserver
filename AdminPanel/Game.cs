@@ -20,7 +20,8 @@ namespace AdminPanel
 		public byte[] Preview { get; set; }
 		//public List<byte[]> Screenshots { get; set; }
 		public List<Genre> Genres{ get; set; }
-		public List<Comment> Comments { get; set; }
+		//public List<Comment> Comments { get; set; }
+		public List<Users> Favorites { get; set; }
 		public Game(string name, byte[] torrent, string description, byte[] preview, string steam = "")
 		{
 			Name = name; Description = description; 
@@ -28,6 +29,7 @@ namespace AdminPanel
 			Genres = new List<Genre>(); 
 			Torrent = torrent;
 			Preview = preview;
+			Favorites = new List<Users>();
 			//if(Screenshots!= null || Screenshots.Count >0)
 			//foreach (var screenshot in Screenshots)
 				//ScreenshotsSerialized += BitConverter.ToString(screenshot);

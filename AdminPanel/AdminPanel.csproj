@@ -148,6 +148,14 @@
     <Compile Include="Migrations\202312211550485_2.designer.cs">
       <DependentUpon>202312211550485_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202401200837030_ava.cs" />
+    <Compile Include="Migrations\202401200837030_ava.designer.cs">
+      <DependentUpon>202401200837030_ava.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404231328184_fav.cs" />
+    <Compile Include="Migrations\202404231328184_fav.designer.cs">
+      <DependentUpon>202404231328184_fav.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -176,6 +184,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202312211550485_2.resx">
       <DependentUpon>202312211550485_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401200837030_ava.resx">
+      <DependentUpon>202401200837030_ava.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404231328184_fav.resx">
+      <DependentUpon>202404231328184_fav.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,3 +1,10 @@
+<?
+use phpailer\phpmailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer as PHPMailerPHPMailer;
+
+?>
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
@@ -8,6 +15,10 @@
     <link href="favicon.ico" rel="icon" >
     </head>
     <style>
+        input{
+            background: white;
+            text-align: center;
+        }
         form{
             width: 55%;
             margin-left: 21%;
@@ -36,37 +47,55 @@
         #back{
             margin-top: 3%;
         }
-        input{
-            background: #212529;
-            color: white;
-            text-align: center;
-        }
     </style>
-    <body class="bg-dark text-light">
-        <div class="container">
-            <div class="row">
-                <div class="col" id='back'><a href="index.php">На главную</a></div>
-            </div>
-        </div>
-    <div class="container">
-    <form method="post">
-            <div class="col" id="form">
-                <label for="nickname">Имя</label>
-                <input name="nickname">
-                <label for="password">Пароль</label>
-                <input type="password" name="password">
-                <label for="email">Почта</label>
-                <input type="email" name="email">
-                <label id="reg_label" for="reg">Зарегестрироваться?</label>
-                <input name="reg" id="reg_input" value="reg" type="checkbox">
-                <button type="submit" class="button" id="bt_reg">OK</button>
-            </div>
+    <body class="bg-dark text-light text-center m-5 d-flex flex-column align-items-stretch">
+    <div style="margin-top:10dp">
+    <a href="index.php" class="mb-3">На главную</a>
+    <?
+            if($_GET["type"] == "reg"){
+                echo("<h1>Регистрация</h1>");
+            }
+            else if($_GET["type"] == "log"){
+                echo("<h1>Вход</h1>");
+            }
+            ?>
+        <form method="post">
+                <div class = "d-flex flex-column">
+                    <label for="nickname">Имя</label>
+                    <input name="nickname">
+                    <label for="password">Пароль</label>
+                    <input type="password" name="password">
+                    <label for="email">Почта</label>
+                    <input type="email" name="email">
+                    <button type="submit" class="mt-3">OK</button>
+                </div>
+         </form>
+    </div>
         <?
        include_once("script.php");
-       
-        function reg(User $user){
-            $connection = sqlsrv_connect("HOME-PC\SQLEXPRESS",array("Database"=>"ObserverDB"));
-            if($user->Name == "admin") die("<h1>Аккаунт администратора можно создать только через запрос в БД</h1>");
+        function reg(){
+            if(!isset($_POST["nickname"])|| 
+            !isset($_POST["password"]) ||
+            !isset($_POST["email"])
+            ){
+                die("<h1 style = 'color:red'>Все поля должны быть заполнены</h1>");
+            };
+            //$msg = 
+            //"Вы зарегестрировались на сайте *ссылка на сайт*. Вам необходимо перейти по ссылке чтобы подтвердить почту *ссылка*";
+            
+            
+            $all = get_users();
+            foreach($all as $user){
+                if(
+                    $user->Name == $_POST["nickname"] ||
+                    $user->Email == $_POST["email"]){
+                        die("<h1>Этот пользователь уже зарегестрирован</h1>");
+                }
+            }
+            $user = new User;
+            $user->args($_POST["nickname"], $_POST["password"], $_POST["email"]);
+            $connection = connect();
+            //if($user->Name == "admin") die("<h1>Аккаунт администратора можно создать только через запрос в БД</h1>");
             $query ="INSERT INTO dbo.Users([Name], [Password], Email) VALUES('"
             .$user->Name."','"
             .$user->Password."','"
@@ -83,48 +112,31 @@
                 die;
             }
         }
-        function login($user){
-            //setcookie("name",$user->Name);
-            setcookie("uid", $user->Id);
-            //if(isset($user->Email)) setcookie("email",$user->Email);
-            header("location:index.php");
-            die;
-        }
-        
-        if(!empty($_POST["nickname"]) and !empty($_POST["password"])) {
-            $user = new User;
-            $user->args(
-            $_POST["nickname"],
-            $_POST["password"],
-            $_POST["email"]);
-            //var_dump($user);
-            if($user->Name == "admin" and $user->Password == "admin") login($user);
-            $stmt = sqlsrv_query($connection, "SELECT * FROM dbo.Users;");
-            while($i = sqlsrv_fetch_object($stmt,"User")){
-                
-                if(isset($_POST["reg"]))
-                if($_POST["reg"] == "reg") {
-                    if($i->Name == $user->Name) die("<h5>Пользователь с именем ".$i->Name." уже существует</h5>");
+        function login(){
+            if(!empty($_POST["nickname"]) && !empty($_POST["password"]) && !empty($_POST["email"])) {
+                $connection = connect();
+                $stmt = sqlsrv_query($connection,"SELECT * FROM Users WHERE Name = '".strval($_POST["nickname"])."' AND Password = '".$_POST["password"]."'");
+                if($errors = sqlsrv_errors()) var_dump($errors[0]['message']);
+                if(!empty($stmt))
+                if(sqlsrv_has_rows($stmt)){
+                    $arr = array();
+                    $arr = fetch($arr,$stmt,"User");
+                    setcookie("uid", $arr[0]->Id);
+                    header("location:index.php");
+                    die;
                 }
-                if($i->Name == $user->Name){
-                        if(strval($i->Password) == $user->Password){
-                            if($i->Email == $user->Email) {
-                                login($user);
-                                break;
-                            }    
-                        }
-                        die("<h5>Ошибка: неправильно введены данные</h5>");    
-                    }      
+                else die("<h2>Неправильно введены данные</h2>");
+                else die("<h2>Неправильно введены данные</h2>");
             }
-            if(isset($_POST["reg"]))
-            if($_POST["reg"] == "reg") {
-                reg($user);die;
-            }
-            echo("<h5>Пользователь с именем '".$user->Name."' не найден в базе данных</h5>
-            <h5>Введите свои данные снова, чтобы войти</h5>
-            <h5>Возможно, вы хотели зарегестрироваться? Для этого отметьте пункт 'Зарегестрироваться' выше</h3>");
+            else die("<h1>Все поля должны быть заполнены</h1>");
+            
         }
-        else die("Необходимо заполнить все поля");
+        if($_GET["type"] == "reg"){
+            reg();
+        }
+        else if($_GET["type"] == "log"){
+            login();
+        }
         ?>
     </form>
     </body>
