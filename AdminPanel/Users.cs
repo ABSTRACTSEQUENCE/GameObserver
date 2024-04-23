@@ -12,7 +12,7 @@ namespace AdminPanel
 		public string Name { get; set; }
 		public string Password { get; set; }
 		public string Email { get; set; }
-		public List<Comment> Comments { get; set; }
+		//public List<Comment> Comments { get; set; }
 		public byte[] Avatar { get; set; }
 		public Users(string name ="", string password="", string email = "")
 		{
