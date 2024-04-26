@@ -6,7 +6,16 @@ if(isset($_COOKIE["uid"]))
     $user = get_user($_COOKIE["uid"]);
 
 $comments = get_comments();
-
+if(!empty($_POST)){
+if($_POST['add'] == '1'){
+    $stmt = sqlsrv_query($connection, "SELECT * FROM UsersGames WHERE Users_Id =".$user->Id."AND Game_Id = ".$game->Id);
+    if(!sqlsrv_has_rows($stmt)){
+        $stmt = 
+        "INSERT INTO UsersGames VALUES (".$user->Id.",".$game->Id.")";
+        if(!sqlsrv_query($connection, $stmt)) die(var_dump(sqlsrv_errors()));
+    }
+}
+}
 $stmt = sqlsrv_query($connection, 
 "SELECT Genres.Name AS 'Genre'
 FROM GenreGames, Games, Genres 
@@ -134,14 +143,14 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
     <div class="element d-flex align-items-center text-center flex-column p-3" style="border-radius: 20px">
             <?
             if(isset($user))
-            if($user->Avatar) echo("<a href='profile.php'><img class='mb-3' style='max-width:250px; border-radius:20px;' src= $user->Avatar id='user_img'></a>");
+            if($user->Avatar) echo("<a href='profile.php?User=".$user->Id."'><img class='mb-3' style='max-width:250px; border-radius:20px;' src= $user->Avatar id='user_img'></a>");
             else echo("<img src='Pictures/icon.jpg' id='user_img'>");
             ?>
             
             <div <?
             if(!isset($user)) {echo("class='m-3' '>Гость( Не зарегестрирован )");
             }
-            else echo(">Пользователь: <a href='profile.php'>".$user->Name."</a>");
+            else echo("><a href='profile.php"."?User=".$user->Id."'>".$user->Name."</a>");
                 ?>
             <div class="button" id="back"><a href="index.php">Вернуться</a></div>
             </div>
@@ -166,30 +175,29 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
                 </div>
                 <?
                 if($game->Steam != "") echo("
-                <div class = id = 'steamlink'>Если вам понравилась игра, поддержите разработчка, купив её в стиме
+                <div class = 'element mt-3 rounded-3' id = 'steamlink'>Если вам понравилась игра, поддержите разработчка, купив её в стиме
                     <p><a href=$game->Steam>".$game->Steam."</a></p>
                 </div>")
                 ?>
-                <div class="d-flex flex-row align-items-center justify-content-between">
-            <div class="element p-3 mt-3 rounded-3">Жанры:
+                <div class="d-flex flex-row align-items-center">
+            <div class="element p-2 mt-3 rounded-3">Жанры:
             <?
             foreach($rel as $i){
                 foreach($i as $j) echo $j.", ";
             }
             ?>
             </div>
-            <form method = 'POST' action="bt_handlers\add_to_fav.php" name = 'fav'>
+            <form method = 'POST'>
                 <?
-                $stmt =sqlsrv_query($connection,"SELECT * FROM UsersGames WHERE Users_Id =".$user->Id);
+                $stmt =sqlsrv_query($connection,"SELECT * FROM UsersGames WHERE Users_Id =".$user->Id."AND Game_Id = ".$game->Id);
                 $fav = sqlsrv_has_rows($stmt);
                 ?>
-            <button <?if($fav) echo "disabled style = 'color:gray !important'";?> class = "element text-light">
+            <button class = 'ms-3 mt-3 element rounded-3 text-white' 
                 <?
-                if($fav) echo("В избранном");
-                else echo("В избранное");
+                if($fav) echo("disabled style = 'color:gray !important'>В избранном");
+                else echo("name = 'add' value = '1'> В избранное</button>");
                 ?>
                 </button>
-            <input name="gameId" hidden value="<?echo$game->Id?>" >
             </form>
         </div>
       
@@ -208,25 +216,25 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
     }
         ?></div>
 
-<div class="d-flex flex-wrap flex-column mt-3" style= width:500px;><!-- Сделать нормальное отображение элементов -->
+<div class="d-flex flex-column mt-3 element" style="max-width: 800px;">
         <?
         $no_comments = true;
         if($comments){/////
             
             foreach($comments as $i){
-                echo("<div class = 'element text-white rounded-3 d-flex flex-column align-items-center text-center mb-3'>");
+                //echo("<div class = 'rounded-3 d-flex flex-column align-items-center text-center mb-3'>");
                 if($i['GameId'] == $game->Id){
                     $no_comments= false;
                 echo(
-                    "<p class = 'rounded-3 '>".$i['Username']."</p>"
-                    ." <p class='comment rounded-3'>".$i["Text"]//."</div>"
+                    "<div><p class = 'element bg-white text-dark rounded-3 '>".$i['Username']."</p>"
+                    ." <p class='rounded-3'>".$i["Text"]."</div>"
                 );
-                echo("</p>");
+                
                 if(isset($user)){
                     if($user->Name == "admin") 
                     echo("<button class = 'comment_del button' onclick = 'handler(".$i['CommentId'].",".$game->Id.")'>Удалить</button>");
                 }
-                echo("</div>");
+                //echo("</div>");
             }
             }
         }

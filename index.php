@@ -22,21 +22,7 @@
 </head>
 
 <body class="bg-dark text-light">
-    <style>
-        .game {
-            margin-top: 3%;
-            /*display: flex;*/
-            padding: 10px;
-            /*flex-direction: column;*/
-        }
-        #topbarElement{
-            width: 50%;
-        }
-   
-    </style>
-    
-
-    <div class="d-flex flex-row align-items-center element justify-content-evenly text-center">
+    <div class="d-flex flex-row align-items-center element justify-content-evenly text-center mb-3">
         <div><a href="genres.php">Жанры</a></div>
         
         <?
@@ -45,8 +31,8 @@
         }
         else{
             echo("<div>");
-            if($user->Avatar) echo("<a href='profile.php'><img class='mb-3' style='max-width:250px; border-radius:20px;' src= $user->Avatar id='user_img'></a>");
-            echo ("<div><a href='profile.php'>$user->Name</a></div></div>");
+            if($user->Avatar) echo("<a href='profile.php?User=".$user->Id."'><img class='mb-3 ava' src= $user->Avatar id='user_img'></a>");
+            echo ("<div><a href='profile.php?User=".$user->Id."'>$user->Name</a></div></div>");
         } ?>
         <div><a href="index.php"><img src="logo_white.png"></a></div>
         

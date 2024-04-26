@@ -1,9 +1,24 @@
 body{
     opacity: 96%;
-    /*background: no-repeat;*/ 
+    background-image: url("Pictures/Background/bg.jpg");
+    background-size: cover;
 }
 #main{
     margin-top: 1%;
+}
+.ava{
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 20px;
+}
+.game {
+    margin-top: 3%;
+    /*display: flex;*/
+    padding: 20px;
+    /*flex-direction: column;*/
+}
+#topbarElement{
+    width: 50%;
 }
 #favicon{
     background-color: transparent;
@@ -35,6 +50,7 @@ body{
 
 .game_name{
     font-weight: bold;
+    margin-right: 1rem;
 }
 .preview_pic{
     max-width: 500px;

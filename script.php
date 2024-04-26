@@ -23,11 +23,11 @@ class User{
     public function setEmail(string $val) {$this->Email = $val;}
 }
 class Game{
-    public $Id;
-    public $Name;
-    public $Description;
-    public $Genre;
-    public $Steam;
+    public int $Id;
+    public string $Name;
+    public string $Description;
+    public string $Genre;
+    public string $Steam;
     public $Torrent;
     public $Preview;
     public $Screenshots;
