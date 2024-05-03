@@ -1,6 +1,6 @@
 body{
     opacity: 96%;
-    background-image: url("Pictures/Background/bg.jpg");
+    /*background-image: url("Pictures/Background/bg.jpg");*/
     background-size: cover;
 }
 #main{
