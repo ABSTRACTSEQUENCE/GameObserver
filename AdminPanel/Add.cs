@@ -35,13 +35,29 @@ namespace AdminPanel
 		}
 		public Add(Game game) 
 		{
-			InitializeComponent(); Init();
-			EditMode= true;
+			EditMode = true;
 			this.game = game;
+			InitializeComponent(); Init();
 			Fill();
 		}
 		void Init()
 		{
+			Screenshots = new List<Bitmap>();
+			if (EditMode)
+			{
+				Screenshot[] screenshots;
+				using (Context c = new Context())
+				{
+					screenshots = c.Screenshots.Where(s=>s.Game.Id == game.Id).ToArray();
+				}
+				foreach(Screenshot s in screenshots)
+				{
+					using(MemoryStream ms = new MemoryStream(s.Image))
+					{
+						Screenshots.Add(new Bitmap(ms));
+					}
+				}
+			}
 			PictureSelector = new OpenFileDialog();
 			PictureSelector.Filter = "Изображения|*.png|Изображения|*.jpg";//вот тут сделать чтобы все форматы поддерживал
 			PictureSelector.Multiselect = false;
@@ -50,10 +66,9 @@ namespace AdminPanel
 		void Fill() //Этот метод используется при редактировании игры
 		{
 			//OldId = g.Id;
-			EditMode = true;
 			using (Stream s = new MemoryStream(game.Preview))
 			{
-				pb_preview.Image = Image.FromStream(s);//
+				pb_preview.Image = Image.FromStream(s);
 			}
 			
 			using(Context c = new Context())
@@ -78,7 +93,7 @@ namespace AdminPanel
 		}
 		void HandleTorrentFile()
 		{
-			if (Torrent != null)
+			if (Torrent != null || EditMode)
 			{
 				l_torrent.Text = TorrentAdded; l_torrent.ForeColor = Color.Green;
 			}
@@ -224,3 +239,4 @@ namespace AdminPanel
 		}
 	}
 }
+//TODO: При редактировании скрины не те

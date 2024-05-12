@@ -188,7 +188,7 @@ namespace AdminPanel
 			UpdateData();
 		}
 
-		private async void bt_del_Click(object sender, EventArgs e)//!!!
+		private async void bt_del_Click(object sender, EventArgs e)
 		{
 			if (data.Rows.Count <= 0) return;
 			bt_del.Enabled = false;
@@ -217,13 +217,12 @@ namespace AdminPanel
 					foreach (DataGridViewRow row in data.SelectedCells)
 					{
 						id = (int)row.Cells[0].Value;
-						Users ToDel = c.Users.Where(u=> u.Id == id).FirstOrDefault();
-						if(ToDel.Name == "admin")
+						Users ToDel = c.Users.Where(u => u.Id == id).FirstOrDefault();
+						if (ToDel.Name == "admin")
 						{
 							MessageBox.Show("Аккаунт администратора можно удалить только через запрос в БД"); return;
 							//Чтобы случайно не удалить аккаунт администратора
 						}
-						//int comment_id;
 						Comment[] ComToDel = c.Comments.Where((comment) => comment.User == ToDel).ToArray();
 						c.Comments.RemoveRange(ComToDel);
 						c.Users.Remove(c.Users.Find(id));
@@ -245,15 +244,15 @@ namespace AdminPanel
 				}
 				else if (source == ds.Tables[(int)Data.Comments])
 				{
-					foreach (DataGridViewCell cell in data.SelectedCells)
+					foreach (DataGridViewRow row in data.SelectedRows)
 					{
-						id = (int)cell.Value;
+						id = (int)row.Cells[0].Value;
 						c.Comments.Remove(c.Comments.Find(id));
 					}
 
 				}
 				//else MessageBox.Show("Ошибка при удалении");
-				await c.SaveChangesAsync(); // При попытке удаления игры, выходит исключения (необходимо удалить все связи с игрой, после чего удалить саму игру)
+				await c.SaveChangesAsync();
 				UpdateData();
 			}
 			bt_del.Enabled = true;
@@ -372,6 +371,7 @@ namespace AdminPanel
 			var source = data.DataSource;
 			if (source == ds.Tables[(int)Data.Games])
 			{
+				if (data.SelectedRows.Count > 1) return;
 				//DataTable games = ds.Tables[(int)Data.Games];
 				using (Context c = new Context())
 				{
@@ -444,19 +444,23 @@ namespace AdminPanel
 					{
 						Preview.Save(ms, ImageFormat.Png);
 						preview = ms.ToArray();
-						ms.Position = 0;
-						{
-							int i = 0;
-							foreach (string screenshot in ScreenshotsFolder)
-							{
-								Bitmap screen = new Bitmap(Image.FromFile(screenshot), new Size(500, 300));
-								screen.Save(ms, ImageFormat.Png);
-								screenshots[i] = ms.ToArray();
-								if (i <= 2) i++;
-							}
-						}
 					}
+					//ms.Position = 0;
+
+					int i = 0;
+					foreach (string screenshot in ScreenshotsFolder)
+					{
+						Bitmap screen = new Bitmap(Image.FromFile(screenshot), new Size(500, 300));
+						using (MemoryStream ms = new MemoryStream()) 
+						{
+							screen.Save(ms, ImageFormat.Png);
+							screenshots[i] = ms.ToArray();
+						}
+						if (i <= 2) i++;
+					}
+
 				}
+
 				byte[] torrent = File.ReadAllBytes(root + "\\Hotline_Miami.torrent");
 				Game game = new Game()
 				{

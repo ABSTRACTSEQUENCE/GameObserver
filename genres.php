@@ -8,26 +8,36 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="favicon.ico" rel="icon" >
     </head>
-    <body class="bg-dark text-light" background="Pictures\Background\bg.jpg">
-        <div class="container">
-            <div class="row">
-                <style>
+    <body class="bg-dark text-light">
+    <style>
                     .genreList{
                         display: flex;
                         flex-direction: column;
-                        background-color: #212529;
                     }
-                </style>
+                    .genreItem{
+                        border-color: white;
+                        border-width: 2px;
+                        border-style: solid;
+                        border-radius: 20px;
+                        padding: 20px;
+                        text-align: center;
+                        margin-top: 20px;
+                        background-color: #272626;
+                        width:651px;
+                    }
+        </style>
+        <div class='d-flex align-items-center flex-column m-3'>
+            <div><a href="index.php"><img src="logo_white.png"></a></div>
+                <h1>Жанры</h1>
                 <div class = 'col genreList'>
                     <?
                     include("script.php");
                     $genres = get_genres();
                     foreach($genres as $genre){
-                        echo("<div class='col' ><a href='index.php?genre=".$genre->Id."'>".$genre->Name."</a></div>");
+                        echo("<div class='col genreItem' ><a href='index.php?genre=".$genre->Id."'>".$genre->Name."</a></div>");
                     }
                     ?>
                     </div>
-            </div>
         </div>
     </body>
 </html>

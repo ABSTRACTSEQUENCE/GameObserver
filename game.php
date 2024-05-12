@@ -50,9 +50,6 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
     #description{
         background-color: #212529;
     }
-    .comment{
-            
-    }
     #user_guest{
         background-color: #212529;
     }
@@ -202,7 +199,6 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
         </div>
       
         <?
-        
         if(isset($game->Torrent)){
             $filename = "Torrents/".$game->Name.".torrent";
             $stream = fopen($filename, 'w');
@@ -214,24 +210,23 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
             Скачать торрент</a>
             </div>");
     }
-        ?></div>
+        ?>
 
-<div class="d-flex flex-column mt-3 element" style="max-width: 800px;">
+<div class="d-flex flex-column mt-3 element">
         <?
         $no_comments = true;
         if($comments){/////
-            
             foreach($comments as $i){
                 //echo("<div class = 'rounded-3 d-flex flex-column align-items-center text-center mb-3'>");
                 if($i['GameId'] == $game->Id){
                     $no_comments= false;
-                echo(
+                echo
                     "<div><p class = 'element bg-white text-dark rounded-3 '>".$i['Username']."</p>"
-                    ." <p class='rounded-3'>".$i["Text"]."</div>"
-                );
+                    ." <p class='rounded-3'>".$i["Text"]."</div>";
+
                 
                 if(isset($user)){
-                    if($user->Name == "admin") 
+                    if($user->Name == "admin" || $i["Username"] == $user->Name) 
                     echo("<button class = 'comment_del button' onclick = 'handler(".$i['CommentId'].",".$game->Id.")'>Удалить</button>");
                 }
                 //echo("</div>");
@@ -249,6 +244,8 @@ while($i=sqlsrv_fetch_array($stmt,SQLSRV_FETCH_ASSOC)){
             </form>
         </div>
 </div>
+        </div>
+
         
     <script>
             function handler(id, game_id){

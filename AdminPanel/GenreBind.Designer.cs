@@ -40,6 +40,7 @@
 			// 
 			// lb_genres
 			// 
+			this.lb_genres.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.lb_genres.FormattingEnabled = true;
 			this.lb_genres.Location = new System.Drawing.Point(145, 125);
 			this.lb_genres.Name = "lb_genres";
@@ -49,6 +50,7 @@
 			// 
 			// lb_games
 			// 
+			this.lb_games.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.lb_games.FormattingEnabled = true;
 			this.lb_games.Location = new System.Drawing.Point(566, 125);
 			this.lb_games.Name = "lb_games";
@@ -60,6 +62,9 @@
 			// 
 			this.data_binded.AllowUserToAddRows = false;
 			this.data_binded.AllowUserToDeleteRows = false;
+			this.data_binded.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.data_binded.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.data_binded.Location = new System.Drawing.Point(271, 56);
 			this.data_binded.MultiSelect = false;
@@ -72,6 +77,7 @@
 			// 
 			// bt_bind
 			// 
+			this.bt_bind.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.bt_bind.Enabled = false;
 			this.bt_bind.Location = new System.Drawing.Point(442, 337);
 			this.bt_bind.Name = "bt_bind";
@@ -83,6 +89,7 @@
 			// 
 			// bt_del
 			// 
+			this.bt_del.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.bt_del.Enabled = false;
 			this.bt_del.Location = new System.Drawing.Point(271, 337);
 			this.bt_del.Name = "bt_del";
@@ -94,6 +101,7 @@
 			// 
 			// label1
 			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(579, 97);
 			this.label1.Name = "label1";

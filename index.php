@@ -60,7 +60,11 @@
                                 echo ("<div class='col game'><a href='game.php?game=" . $i->Id . "'><img class = preview_pic src= 'data:image/png;base64,".$i->Preview."'/>></a><div class = 'description'><span class = game_name>" . $i->Name . "</span>" . $i->Description . "</div></div>");
                         }
                         else {
-                            echo ("<div class='col game'><a href='game.php?game=" . $i->Id . "'><img class = 'preview_pic' src= 'data:image/png;base64,".$i->Preview."'/></a><div class = 'description'><span class = game_name>" . $i->Name . "</span><p>" . $i->Description . "</p></div></div>");
+                            echo ("<div class='col game'>
+                            <a href='game.php?game=" . $i->Id . "'>
+                            <img class = 'preview_pic' src= 'data:image/png;base64,".$i->Preview."'>
+                            </a>
+                            <div class = 'description'><span class = game_name>" . $i->Name . "</span><p>" . $i->Description . "</p></div></div>");
                         }
                         //echo("<div class='col game'><a href='game.php?game=".$i->Id."'><img class = preview_pic col src='/Pictures/Previews/".$i->Name."/".$i->Name.".png'/></a><div class = 'description'><span class = game_name>".$i->Name."</span><p>".$i->Description."</p></div></div>"); 
                     }
